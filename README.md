@@ -13,7 +13,7 @@ cnn module
 
 __init__.py : 비어있음
 
-nn.py: 공통적인 nn 형식 설정
+nn.py: 공통적인 nn 형식(weight variable, bias variable) 설정 - pytorch에서는 내장 모듈로 해결
 
 dense.py : DNN, mnist_like.py : mnist => 제외
 
@@ -21,4 +21,4 @@ no_padding_1conv.py : 순수한 CNN
 
 joint_mn.py : CNN으로 시작해서 LSTM으로 마무리
 
-=> nn.py, no_padding_1conv.py만 일단 구현해보고, joint_mn.py는 나중에 필요하면
+=> no_padding_1conv.py만 일단 구현해보고, joint_mn.py는 나중에 필요하면
