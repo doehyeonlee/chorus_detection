@@ -55,7 +55,7 @@ for file_name in os.listdir(data_folder):
             songs_data.append(song_data)
 
 # Slice for simple test
-songs_data = songs_data[:10]
+# songs_data = songs_data[:10]
 # Step 2: Convert the list to a DataFrame
 songs_df = pd.DataFrame(songs_data)
 songs_df['borders'] = songs_df['a_lyrics'].apply(ls.segment_borders)
@@ -91,25 +91,24 @@ print('simsyl calculation completed')
 # Save the DataFrames
 songs_df.to_hdf('song_data1.hdf', key='df', mode='w')
 ssms.to_hdf('ssm_store1.hdf', key='df', mode='w')
-
 # Read the DataFrames
 songs = pd.read_hdf('song_data1.hdf', key='df')
 ssms_string = pd.read_hdf('ssm_store1.hdf', key='df')
+print(type(ssms_string))
+print(type(ssms_string.head()))
 
 # print(songs)
-song = songs.iloc[18]
+song = songs.iloc[3]
 song_id = song.id
 lyric = song.a_lyrics
 segm_borders = song.borders
 print('segment borders:', segm_borders, '\n')
 print(ls.pretty_print_tree(ls.tree_structure(ls.normalize_lyric(lyric))))
 
-for i in range(9):
-    print(ssms_string.iloc[i].shape)
-
-# #get borders and SSM from stores
-for i in range(9):
-    ssm_lines_string = ssms_string[ssms_string['id'] == song_id].iloc[i]['ssm']
-    ssm_drawing.draw_ssm_encodings_side_by_side(ssm_some_encoding=ssm_lines_string, ssm_other_encoding=ssm_lines_string, ssm_third_encoding=ssm_lines_string,\
-                                         representation_some = 'string', representation_other = 'string', representation_third = 'string',\
-                                         artist_name=song.a_name, song_name=song.a_song, genre_of_song='undef')
+sim_types = ['simstr', 'simhead', 'simtail', 'simphone', 'simpos', 'simw2v', 'sims2v', 'simsyW', 'simsyl']
+for sim_type in sim_types:
+    ssm_lines_string = ssms_string[ssms_string['id'] == song_id].iloc[0][sim_type]
+    ssm_drawing.draw_ssm_encodings_side_by_side(ssm_some_encoding=ssm_lines_string, ssm_other_encoding=ssm_lines_string,
+                                                ssm_third_encoding=ssm_lines_string, representation_some='string', representation_other='string',
+                                                representation_third='string', artist_name=song.a_name, song_name=song.a_song, genre_of_song='undef')
+    print(ssm_lines_string.shape)
