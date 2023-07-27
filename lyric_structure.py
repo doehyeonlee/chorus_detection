@@ -111,6 +111,15 @@ def calculate_w2v(lyric):
     )
     return ssm_lines_string
 
+def calculate_s2v(lyric):
+    normalized_lyric = normalize_lyric(lyric)
+    line_encoding_string = line_structure(normalized_lyric)
+    ssm_lines_string = self_similarity_matrix(
+        line_encoding_string, metric=lambda x, y: pow(cal.sims2v(x, y), 1)
+    )
+    return ssm_lines_string
+
+
 def calculate_syW(lyric):
     normalized_lyric = normalize_lyric(lyric)
     line_encoding_string = line_structure(normalized_lyric)
@@ -119,22 +128,5 @@ def calculate_syW(lyric):
     )
     return ssm_lines_string
 
-def simsyl(lyrics):
-    lines = lyrics.split("\n")
-    T = len(lines)
-
-    # Calculate the total syllable count for each lyric line
-    syllable_counts = [cal.count_syllables(line) for line in lines]
-
-    # Create a matrix to store the similarities
-    similarity_matrix = np.zeros((T, T))
-
-    # Calculate the similarity using DTW and fill in the matrix
-    for i in range(T):
-        for j in range(T):
-            window1 = syllable_counts[i:i+4]
-            window2 = syllable_counts[j:j+4]
-            distance, _ = fastdtw(window1, window2)
-            similarity_matrix[i, j] = 1 / (1 + distance)  # Similarity is the inverse of distance
-
-    return similarity_matrix
+def calculate_syl(lyric):
+    return cal.simsyl(lyric)
